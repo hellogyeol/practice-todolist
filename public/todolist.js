@@ -6,11 +6,22 @@ let todolist = [];
 
 if (savedList !== null) {
   todolist = JSON.parse(savedList);
+  render();
+} else {
+  const span = document.createElement('span');
+  span.innerText = 'No Todo!';
+  document.body.append(span);
 }
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
+function render() {
+  todolist.map(todo => {
+    const li = document.createElement('li');
+    li.innerText = todo.content;
+    ul.append(li);
+  });
+}
 
+form.addEventListener('submit', () => {
   const todo = {
     id: Date.now(),
     content: input.value
