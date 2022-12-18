@@ -17,7 +17,6 @@ form.addEventListener('submit', event => {
   };
   input.value = '';
   todolist.push(todo);
-  
   saveList();
   pageRefresh();
   renderList();
@@ -35,8 +34,21 @@ function renderList() {
   todolist.map(todo => {
     const li = document.createElement('li');
     const span = document.createElement('span');
+    const deleteBtn = document.createElement('button');
     span.innerText = todo.content;
-    li.append(span);
+    deleteBtn.innerText = 'X';
+    li.id = todo.id;
+    li.append(span, deleteBtn);
     ul.append(li);
+
+    deleteBtn.addEventListener('click', deleteTodo);
   });
+}
+
+function deleteTodo(event) {
+  const todoLiId = event.target.parentElement.id;
+  todolist = todolist.filter(todo => todo.id !== todoLiId);
+  saveList();
+  pageRefresh();
+  renderList();
 }
