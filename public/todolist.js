@@ -13,7 +13,8 @@ form.addEventListener('submit', event => {
   event.preventDefault();
   const todo = {
     id: String(Date.now()),
-    content: input.value
+    content: input.value,
+    done: false
   };
   input.value = '';
   todolist.push(todo);
@@ -35,19 +36,43 @@ function renderList() {
     const li = document.createElement('li');
     const span = document.createElement('span');
     const deleteBtn = document.createElement('button');
+    const checkBox = document.createElement('input');
+    checkBox.type = 'checkbox';
+
     span.innerText = todo.content;
     deleteBtn.innerText = 'X';
     li.id = todo.id;
-    li.append(span, deleteBtn);
+    li.append(checkBox, span, deleteBtn);
     ul.append(li);
 
+    if (todo.done === true) {
+      checkBox.checked = true;
+      span.style.textDecoration = 'line-through';
+    } else {
+      checkBox.checked = false;
+      span.style.textDecoration = 'none';
+    }
+
     deleteBtn.addEventListener('click', deleteTodo);
+    checkBox.addEventListener('click', doneTodo);
   });
 }
 
 function deleteTodo(event) {
   const todoLiId = event.target.parentElement.id;
   todolist = todolist.filter(todo => todo.id !== todoLiId);
+  saveList();
+  pageRefresh();
+  renderList();
+}
+
+function doneTodo(event) {
+  const todoLiId = event.target.parentElement.id;
+  todolist.forEach(todo => {
+    if (todo.id === todoLiId) {
+      todo.done = !todo.done
+    }
+  });
   saveList();
   pageRefresh();
   renderList();
