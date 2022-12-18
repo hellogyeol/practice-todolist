@@ -6,28 +6,20 @@ let todolist = [];
 
 if (savedList !== null) {
   todolist = JSON.parse(savedList);
-  render();
-} else {
-  const span = document.createElement('span');
-  span.innerText = 'No Todo!';
-  document.body.append(span);
+  saveList();
 }
 
-function render() {
-  todolist.map(todo => {
-    const li = document.createElement('li');
-    li.innerText = todo.content;
-    ul.append(li);
-  });
-}
-
-form.addEventListener('submit', () => {
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
   const todo = {
-    id: Date.now(),
+    id: String(Date.now()),
     content: input.value
   };
-
-  todolist.push(todo);
   input.value = '';
-  localStorage.setItem('todolist', JSON.stringify(todolist));
+  todolist.push(todo)
+  saveList();
 });
+
+function saveList() {
+  localStorage.setItem('todolist', JSON.stringify(todolist));
+}
