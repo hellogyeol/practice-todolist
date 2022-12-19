@@ -11,6 +11,13 @@ if (savedList !== null) {
 
 form.addEventListener('submit', event => {
   event.preventDefault();
+  makeTodo();
+  saveList();
+  pageRefresh();
+  renderList();
+});
+
+function makeTodo() {
   const todo = {
     id: String(Date.now()),
     content: input.value,
@@ -18,10 +25,7 @@ form.addEventListener('submit', event => {
   };
   input.value = '';
   todolist.push(todo);
-  saveList();
-  pageRefresh();
-  renderList();
-});
+}
 
 function saveList() {
   localStorage.setItem('todolist', JSON.stringify(todolist));
